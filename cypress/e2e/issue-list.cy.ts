@@ -2,6 +2,51 @@ import mockIssues1 from "../fixtures/issues-page-1.json";
 import mockIssues2 from "../fixtures/issues-page-2.json";
 import mockIssues3 from "../fixtures/issues-page-3.json";
 
+describe("Issue List Loading", () => {
+  it("displays loading spinner", () => {
+    cy.intercept("GET", "https://prolog-api.profy.dev/project", (req) => {
+      req.reply({
+        delay: 2000, // simulate a 2-second delay
+        fixture: "projects.json",
+      });
+    }).as("getProjects");
+
+    cy.intercept("GET", "https://prolog-api.profy.dev/issue?page=1", (req) => {
+      req.reply({
+        delay: 2000, // simulate a 2-second delay
+        fixture: "issues-page-1.json",
+      });
+    }).as("getIssuesPage1");
+
+    cy.intercept("GET", "https://prolog-api.profy.dev/issue?page=2", (req) => {
+      req.reply({
+        delay: 2000, // simulate a 2-second delay
+        fixture: "issues-page-2.json",
+      });
+    }).as("getIssuesPage2");
+
+    cy.intercept("GET", "https://prolog-api.profy.dev/issue?page=3", (req) => {
+      req.reply({
+        delay: 2000, // simulate a 2-second delay
+        fixture: "issues-page-3.json",
+      });
+    }).as("getIssuesPage3");
+
+    cy.visit(`http://localhost:3000/dashboard/issues`);
+
+    it("displays loading spinner", () => {
+      // check that the loading spinner is present in the DOM
+      cy.get("#loading-spinner").should("exist");
+    });
+
+    // wait for request to resolve
+    cy.wait(["@getProjects", "@getIssuesPage1"]);
+    cy.wait(500);
+
+    cy.get("#loading-spinner").should("not.exist");
+  });
+});
+
 describe("Issue List", () => {
   beforeEach(() => {
     // setup request mocks
