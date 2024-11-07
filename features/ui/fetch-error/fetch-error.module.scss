@@ -1,0 +1,27 @@
+@use "@styles/color";
+
+.error {
+  background-color: color.$error-25;
+  border: 1px solid color.$error-300;
+  border-radius: 0.5rem;
+  color: color.$error-700;
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  padding: 1rem;
+
+  .errorMessage {
+    align-items: center;
+    display: flex;
+    flex-direction: row;
+    gap: 0.75rem;
+  }
+
+  .errorTryAgainLink {
+    color: color.$error-700;
+    align-items: center;
+    display: flex;
+    gap: 0.5rem;
+    text-decoration: none;
+  }
+}

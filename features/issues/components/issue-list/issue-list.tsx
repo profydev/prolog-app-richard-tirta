@@ -3,6 +3,7 @@ import { ProjectLanguage } from "@api/projects.types";
 import { useGetProjects } from "@features/projects";
 import { useGetIssues } from "../../api/use-get-issues";
 import { IssueRow } from "./issue-row";
+import { FetchError } from "./../../../ui/fetch-error";
 import styles from "./issue-list.module.scss";
 
 export function IssueList() {
@@ -23,12 +24,22 @@ export function IssueList() {
 
   if (projects.isError) {
     console.error(projects.error);
-    return <div>Error loading projects: {projects.error.message}</div>;
+    return (
+      <FetchError
+        error={{ message: `Error loading projects: ${projects.error.message}` }}
+        refetch={projects.refetch}
+      />
+    );
   }
 
   if (issuesPage.isError) {
     console.error(issuesPage.error);
-    return <div>Error loading issues: {issuesPage.error.message}</div>;
+    return (
+      <FetchError
+        error={{ message: `Error loading issues: ${issuesPage.error.message}` }}
+        refetch={issuesPage.refetch}
+      />
+    );
   }
 
   const projectIdToLanguage = (projects.data || []).reduce(

@@ -40,3 +40,61 @@ describe("Project List", () => {
     });
   });
 });
+
+describe("Loads error on Project List Fetch Error", () => {
+  context("desktop resolution", () => {
+    beforeEach(() => {
+      cy.viewport(1025, 900);
+    });
+
+    it("displays an error message when the request fails", () => {
+      cy.intercept("GET", "https://prolog-api.profy.dev/project", {
+        forceNetworkError: true,
+      }).as("getProjects");
+
+      cy.visit("http://localhost:3000/dashboard");
+
+      cy.wait(9000);
+
+      cy.get("@getProjects");
+
+      cy.get("#error-message").should("contain.text", "Network Error");
+
+      cy.get("#error-try-again-link").click();
+
+      cy.wait("@getProjects");
+
+      cy.wait(9000);
+
+      cy.get("#error-message").should("contain.text", "Network Error");
+    });
+  });
+
+  context("mobile resolution", () => {
+    beforeEach(() => {
+      cy.viewport("iphone-8");
+    });
+
+    it("displays an error message when the request fails", () => {
+      cy.intercept("GET", "https://prolog-api.profy.dev/project", {
+        forceNetworkError: true,
+      }).as("getProjects");
+
+      cy.visit("http://localhost:3000/dashboard");
+
+      cy.wait(9000);
+
+      cy.get("@getProjects");
+
+      cy.get("#error-message").should("contain.text", "Network Error");
+
+      cy.get("#error-try-again-link").click();
+
+      cy.wait("@getProjects");
+
+      cy.wait(9000);
+
+      cy.get("#error-message").should("contain.text", "Network Error");
+    });
+  });
+});
