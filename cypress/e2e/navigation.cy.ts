@@ -29,6 +29,14 @@ describe("Sidebar Navigation", () => {
       cy.get("nav")
         .contains("Settings")
         .should("have.attr", "href", "/dashboard/settings");
+
+      cy.get("nav")
+        .contains("Support")
+        .should(
+          "have.attr",
+          "href",
+          "mailto:support@prolog-app.com?subject=Support%20Request",
+        );
     });
 
     it("is collapsible", () => {
@@ -36,7 +44,7 @@ describe("Sidebar Navigation", () => {
       cy.get("nav").contains("Collapse").click();
 
       // check that links still exist and are functionable
-      cy.get("nav").find("a").should("have.length", 5).eq(1).click();
+      cy.get("nav").find("a").should("have.length", 6).eq(1).click();
       cy.url().should("eq", "http://localhost:3000/dashboard/issues");
 
       // check that text is not rendered
@@ -80,7 +88,7 @@ describe("Sidebar Navigation", () => {
       isInViewport("nav");
 
       // check that all links are rendered
-      cy.get("nav").find("a").should("have.length", 5);
+      cy.get("nav").find("a").should("have.length", 6);
 
       // Support button should be rendered but Collapse button not
       cy.get("nav").contains("Support").should("exist");
@@ -90,23 +98,6 @@ describe("Sidebar Navigation", () => {
       cy.get("img[alt='close menu']").click();
       cy.wait(500);
       isNotInViewport("nav");
-    });
-
-    it("opens the user's mail app on clicking 'Support'", () => {
-      cy.intercept(
-        "GET",
-        "**/mailto:support@prolog-app.com?subject=Support%20Request:%20**",
-      ).as("openEmailApp");
-
-      // trigger the mailto link by clicking the 'Support' button
-      cy.get("nav").contains("Support").click();
-
-      cy.wait("@openEmailApp").then((interception) => {
-        assert.isNotNull(interception.response, "API call has data");
-        if (interception.response) {
-          assert.isNotNull(interception.response.body, "API call has data");
-        }
-      });
     });
   });
 });
