@@ -93,6 +93,10 @@ describe("Loads error on Issue List Fetch Error", () => {
 
     it("displays an error message when the request fails", () => {
       cy.intercept("GET", "https://prolog-api.profy.dev/issue?page=1", {
+        fixture: "issues-page-1.json",
+      }).as("getIssuesPage1");
+
+      cy.intercept("GET", "https://prolog-api.profy.dev/issue?page=1", {
         forceNetworkError: true,
       }).as("getIssuesPage1");
 
@@ -100,13 +104,13 @@ describe("Loads error on Issue List Fetch Error", () => {
 
       cy.wait(9000);
 
-      cy.get("getIssuesPage1");
+      cy.get("@getIssuesPage1");
 
       cy.get("#error-message").should("contain.text", "Network Error");
 
       cy.get("#error-try-again-link").click();
 
-      cy.wait("getIssuesPage1");
+      cy.wait("@getIssuesPage1");
 
       cy.wait(9000);
 
@@ -128,13 +132,13 @@ describe("Loads error on Issue List Fetch Error", () => {
 
       cy.wait(9000);
 
-      cy.get("getIssuesPage1");
+      cy.get("@getIssuesPage1");
 
       cy.get("#error-message").should("contain.text", "Network Error");
 
       cy.get("#error-try-again-link").click();
 
-      cy.get("getIssuesPage1");
+      cy.get("@getIssuesPage1");
 
       cy.wait(9000);
 
