@@ -91,5 +91,22 @@ describe("Sidebar Navigation", () => {
       cy.wait(500);
       isNotInViewport("nav");
     });
+
+    it("opens the user's mail app on clicking 'Support'", () => {
+      cy.intercept(
+        "GET",
+        "**/mailto:support@prolog-app.com?subject=Support%20Request:%20**",
+      ).as("openEmailApp");
+
+      // trigger the mailto link by clicking the 'Support' button
+      cy.get("nav").contains("Support").click();
+
+      cy.wait("@openEmailApp").then((interception) => {
+        assert.isNotNull(interception.response, "API call has data");
+        if (interception.response) {
+          assert.isNotNull(interception.response.body, "API call has data");
+        }
+      });
+    });
   });
 });
