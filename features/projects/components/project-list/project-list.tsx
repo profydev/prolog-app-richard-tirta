@@ -1,9 +1,10 @@
 import { ProjectCard } from "../project-card";
 import { useGetProjects } from "../../api/use-get-projects";
+import { FetchError } from "./../../../ui/fetch-error";
 import styles from "./project-list.module.scss";
 
 export function ProjectList() {
-  const { data, isLoading, isError, error } = useGetProjects();
+  const { data, isLoading, isError, error, refetch } = useGetProjects();
 
   if (isLoading) {
     return <div>Loading</div>;
@@ -11,7 +12,7 @@ export function ProjectList() {
 
   if (isError) {
     console.error(error);
-    return <div>Error: {error.message}</div>;
+    return <FetchError error={error} refetch={refetch} />;
   }
 
   return (
