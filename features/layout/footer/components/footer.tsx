@@ -6,28 +6,30 @@ export function Footer() {
   return (
     <footer className={styles.footer}>
       <div className={styles.desktopVersion}>Version: {version}</div>
-      <ul className={styles.footerMenu}>
-        <li>
-          <Link className={styles.menuLink} href="#">
-            Docs
-          </Link>
-        </li>
-        <li>
-          <Link className={styles.menuLink} href="#">
-            API
-          </Link>
-        </li>
-        <li>
-          <Link className={styles.menuLink} href="#">
-            Help
-          </Link>
-        </li>
-        <li>
-          <Link className={styles.menuLink} href="#">
-            Community
-          </Link>
-        </li>
-      </ul>
+      <nav>
+        <ul className={styles.footerMenu}>
+          <li>
+            <Link className={styles.menuLink} href="#">
+              Docs
+            </Link>
+          </li>
+          <li>
+            <Link className={styles.menuLink} href="#">
+              API
+            </Link>
+          </li>
+          <li>
+            <Link className={styles.menuLink} href="#">
+              Help
+            </Link>
+          </li>
+          <li>
+            <Link className={styles.menuLink} href="#">
+              Community
+            </Link>
+          </li>
+        </ul>
+      </nav>
       {/* eslint-disable-next-line @next/next/no-img-element */}
       <img
         src="/icons/logo-small.svg"
