@@ -38,7 +38,7 @@ export function SidebarNavigation() {
           {/* eslint-disable-next-line @next/next/no-img-element */}
           <img
             src={
-              isSidebarCollapsed
+              isSidebarCollapsed && !isMobileMenuOpen
                 ? "/icons/logo-small.svg"
                 : "/icons/logo-large.svg"
             }
